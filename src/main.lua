@@ -3,7 +3,7 @@ dofile("lib/curl.lua")
 dofile("lib/escape-fix.lua")
 dofile("lib/Fedi.lua")
 
-targetBoard = "wg"
+targetBoard = "c"
 
 -- getRandomThread: Returns a random thread number from the catalog
 function getRandomThread()
@@ -25,16 +25,9 @@ function downloadImage(imgNumber, extension)
 	wallpaperImg:close()
 end
 
--- postWallpaper: Posts a random wallpaper from /wg/ or /w/ to the configured account
+-- postWallpaper: Posts a random image from /c/ to the configured account
 function postWallpaper()
-	-- Roll for a wallpaper from either /wg/ or /w/
-	if (math.random(1, 2) == 1) then
-		targetBoard = "wg"
-	else
-		targetBoard = "w"
-	end
-
-	local wallpaperData = getRandomReplyImage(getRandomThread()) -- Getting a random post from /wg/
+	local wallpaperData = getRandomReplyImage(getRandomThread()) -- Getting a random post from /c/
 
 	-- Making sure a valid image was chosen
 	while (wallpaperData[1] == nil) do
@@ -42,7 +35,7 @@ function postWallpaper()
 	end
 
 	downloadImage(wallpaperData[1], wallpaperData[2]) -- Downloading the post's attachment
-	Fedi.postStatus("#nsfw", {wallpaperData[1] .. wallpaperData[2]}) -- Posting it
+	Fedi.postStatus("#cuteposting", {wallpaperData[1] .. wallpaperData[2]}) -- Posting it
 	os.remove(wallpaperData[1] .. wallpaperData[2]) -- Deleting it after
 end
 
